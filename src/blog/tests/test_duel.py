@@ -15,14 +15,16 @@ class DuelTests(TestCase):
     def setUpTestData(cls):
         call_command("seed_blog", verbosity=0)
 
-    def test_first_four_queries_match_the_oracle_with_one_query(self):
-        for key in ("q1", "q2", "q3", "q4"):
+    def test_all_queries_match_the_oracle_with_one_query(self):
+        for key in BY_KEY:
             with self.subTest(question=key):
                 answer = getattr(team, key)()
                 self.assertIsInstance(answer, QuerySet)
                 with self.assertNumQueries(1):
                     result = BY_KEY[key].normalize(answer)
                 self.assertEqual(result, BY_KEY[key].expected)
+                if key == "q5":
+                    self.assertEqual(len(answer), 3)
                 verdict = run_all("team", only=key)[0]
                 self.assertEqual(verdict.status, "ok")
                 self.assertEqual(verdict.queries, 1)
