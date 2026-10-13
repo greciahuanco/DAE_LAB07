@@ -11,6 +11,7 @@ from .questions import QUESTIONS, Question
 SOURCES = {
     "team": "blog.duel.team",
     "ai": "blog.duel.ai_answers",
+    "ai_authorized": "blog.duel.ai_authorized",
     "solutions": "teacher.solutions",
 }
 
